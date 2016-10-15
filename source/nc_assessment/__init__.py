@@ -25,6 +25,11 @@ def register_plan():
     data = request.get_json()
     id = data["id"]
     name = data["name"]
+    app.logger.debug(dumps({
+        "nc_route": "register_plan",
+        "nc_id": id,
+        "nc_name": name
+    }))
 
     # Add a message to the message broker asking for the registration of
     # the plan.

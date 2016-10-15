@@ -11,6 +11,7 @@ COPY nc_assessment /nc_assessment
 COPY uwsgi.ini /
 COPY cmd.sh /
 COPY run_server.py /
+COPY test.py /
 
 USER uwsgi
 CMD ["/cmd.sh"]
