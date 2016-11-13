@@ -12,7 +12,6 @@ COPY cmd.sh /
 COPY run_server.py /
 COPY test.py /
 
-# EXPOSE 9090
 
 USER uwsgi
 CMD ["/cmd.sh"]
