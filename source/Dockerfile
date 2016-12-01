@@ -1,17 +1,14 @@
-FROM python:3.5.2
+FROM python:3.5
 
 MAINTAINER Kor de Jong <k.dejong@geoneric.eu>
+
+COPY cmd.sh requirements.txt server.py server_flask.py server_wsgi.py \
+    uwsgi.ini /
+COPY assessment /assessment
+COPY test /test
+
+RUN pip install --upgrade pip && pip install -r requirements.txt
 RUN groupadd -r uwsgi && useradd -r -g uwsgi uwsgi
-
-COPY requirements.txt /
-RUN pip install -r requirements.txt
-
-COPY nc_assessment /nc_assessment
-COPY uwsgi.ini /
-COPY cmd.sh /
-COPY run_server.py /
-COPY test.py /
-
 
 USER uwsgi
 CMD ["/cmd.sh"]

@@ -3,9 +3,9 @@ set -e
 
 
 if [ "$ENV" = "DEVELOPMENT" ]; then
-    exec python run_server.py
+    exec python server_flask.py
 elif [ "$ENV" = "TEST" ]; then
-    exec python test.py
+    exec python -m unittest discover test *_test.py
 else
     exec uwsgi uwsgi.ini
 fi
