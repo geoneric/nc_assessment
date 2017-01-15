@@ -1,14 +1,9 @@
-FROM python:3.5
+FROM geoneric/nc_base:latest
 
 MAINTAINER Kor de Jong <k.dejong@geoneric.eu>
 
-COPY cmd.sh requirements.txt server.py server_flask.py server_wsgi.py \
-    uwsgi.ini /
-COPY assessment /assessment
+COPY cmd.sh server.py server_flask.py server_wsgi.py uwsgi.ini /
+COPY nc_assessment /nc_assessment
 COPY test /test
 
-RUN pip install --upgrade pip && pip install -r requirements.txt
-RUN groupadd -r uwsgi && useradd -r -g uwsgi uwsgi
-
-USER uwsgi
 CMD ["/cmd.sh"]
