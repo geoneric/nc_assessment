@@ -80,6 +80,20 @@ def create_app(
     ### app.register_blueprint(main_blueprint)
 
 
+    def format_pathname_(
+            string,
+            max_length):
+        assert max_length > 3
+        if len(string) > max_length:
+            string = "...{}".format(string[-(max_length-3):])
+        return string
+
+    @app.template_filter()
+    def format_pathname(
+            string):
+        return format_pathname_(string, 50)
+
+
     ### with app.app_context():
     ###     # http://stackoverflow.com/questions/19437883/when-scattering-flask-models-runtimeerror-application-not-registered-on-db-w
     ###     # Extensions like Flask-SQLAlchemy now know what the "current" app

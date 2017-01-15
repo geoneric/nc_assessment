@@ -18,10 +18,51 @@
         <div class="jumbotron">
             <h1>Welcome to Natural Capital Assessment</h1>
             <p>
-                Here you can see and manipulate the state of the Natural
+                Here you can see some of the state of the Natural
                 Capital Assessment services
             </p>
         </div>
+
+
+        <h2>Plans</h2>
+        <table class="table table-condensed table-striped">
+            <thead>
+                <th>Raw</td>
+                <th>Pathname</td>
+                <th>Status</td>
+                <th>Links</td>
+            </thead>
+            <tbody>
+    {% for plan in plans.plans %}
+                <tr>
+                    <td>
+                        <div class="dropdown">
+                            <a href="#"
+                                data-toggle="dropdown"
+                                class="dropdown-toggle">
+                                json <b class="caret"></b>
+                            </a>
+                            <pre class="dropdown-menu">{{ plan | pprint }}</pre>
+                        </div>
+                    </td>
+                    <td>{{ plan.status }}</td>
+                    <td
+                        data-toggle="tooltip"
+                        data-placement="auto"
+                        title="{{ plan.pathname }}">
+                        {{ plan.pathname | format_pathname }}
+                    </td>
+                    <td>
+                        <a href="{{ plan._links.self }}">self</a>,
+                        <a href="{{ plan._links.collection }}">collection</a>
+                        {% if plan._links.wms %}
+                        , <a href="{{ plan._links.wms }}">wms</a>
+                        {% endif %}
+                    </td>
+                </tr>
+    {% endfor %}
+            <tbody>
+        </table>
 
     </div>
 {% endblock %}
