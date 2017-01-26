@@ -70,7 +70,9 @@ def plans_all():
                 # map.
 
                 plan_dict = response.json()["plan"]
-                plan_uri = plans_uri(plan_dict["_links"]["self"])
+                payload = {
+                    "pathname": plan_dict["pathname"]
+                }
 
                 # Post message in rabbitmq and be done with it.
                 credentials = pika.PlainCredentials(
@@ -89,12 +91,17 @@ def plans_all():
                         retry_delay=5  # Seconds
                 ))
                 channel = connection.channel()
+
                 channel.queue_declare(
-                    queue="register_plan")
+                    queue="register_raster",
+                    durable=True)
                 channel.basic_publish(
                     exchange="",
-                    routing_key="register_plan",
-                    body="{}".format(plan_uri)
+                    routing_key="register_raster",
+                    body=json.dumps(payload),
+                    properties=pika.BasicProperties(
+                        delivery_mode=2,  # Persistent messages.
+                    )
                 )
                 connection.close()
 

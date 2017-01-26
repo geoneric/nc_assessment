@@ -21,9 +21,9 @@ class Configuration:
     # NC_ASSESSMENT_HOST = "nc_assessment"
     NC_PLAN_HOST = "nc_plan"
 
-    NC_RABBITMQ_DEFAULT_USER = os.environ.get("RABBITMQ_DEFAULT_USER")
-    NC_RABBITMQ_DEFAULT_PASS = os.environ.get("RABBITMQ_DEFAULT_PASS")
-    NC_RABBITMQ_DEFAULT_VHOST = os.environ.get("RABBITMQ_DEFAULT_VHOST")
+    NC_RABBITMQ_DEFAULT_USER = os.environ.get("NC_RABBITMQ_DEFAULT_USER")
+    NC_RABBITMQ_DEFAULT_PASS = os.environ.get("NC_RABBITMQ_DEFAULT_PASS")
+    NC_RABBITMQ_DEFAULT_VHOST = os.environ.get("NC_RABBITMQ_DEFAULT_VHOST")
 
 
     @staticmethod
