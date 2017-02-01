@@ -71,7 +71,8 @@ def plans_all():
 
                 plan_dict = response.json()["plan"]
                 payload = {
-                    "pathname": plan_dict["pathname"]
+                    "pathname": plan_dict["pathname"],
+                    "workspace": data["user"]
                 }
 
                 # Post message in rabbitmq and be done with it.
