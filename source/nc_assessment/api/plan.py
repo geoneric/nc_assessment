@@ -11,6 +11,7 @@ from .. import uploaded_plans
 
 def plans_uri(
         route):
+    route = route.lstrip("/")
     return "http://{}:{}/{}".format(
         current_app.config["NC_PLAN_HOST"],
         current_app.config["NC_PLAN_PORT"],
@@ -71,7 +72,7 @@ def plans_all():
 
                 plan_dict = response.json()["plan"]
                 payload = {
-                    "pathname": plan_dict["pathname"],
+                    "uri": plans_uri(plan_dict["_links"]["self"]),
                     "workspace": data["user"]
                 }
 
@@ -131,6 +132,57 @@ def plan(
     response = requests.get(uri)
 
     return response.text, response.status_code
+
+
+# - Post request for georeferencing a plan by user-id and plan-id
+@api_blueprint.route(
+    "/plans/<uuid:user_id>/<uuid:plan_id>/georeference",
+    methods=["POST"])
+def georeference_plan(
+        user_id,
+        plan_id):
+
+    uri = plans_uri("plans/{}/{}".format(user_id, plan_id))
+    # response = requests.get(uri)
+
+    # if response.status_code == 200:
+
+    data = request.get_json()
+    payload = data["georeference"]
+    payload["uri"] = uri
+
+    # Post message in rabbitmq and be done with it.
+    credentials = pika.PlainCredentials(
+        current_app.config["NC_RABBITMQ_DEFAULT_USER"],
+        current_app.config["NC_RABBITMQ_DEFAULT_PASS"]
+    )
+
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(
+            host="rabbitmq",
+            virtual_host=current_app.config[
+                "NC_RABBITMQ_DEFAULT_VHOST"],
+            credentials=credentials,
+            # Keep trying for 8 minutes.
+            connection_attempts=100,
+            retry_delay=5  # Seconds
+    ))
+    channel = connection.channel()
+
+    channel.queue_declare(
+        queue="georeference_raster",
+        durable=True)
+    channel.basic_publish(
+        exchange="",
+        routing_key="georeference_raster",
+        body=json.dumps(payload),
+        properties=pika.BasicProperties(
+            delivery_mode=2,  # Persistent messages.
+        )
+    )
+    connection.close()
+
+    return "request posted", 201
 
 
 # - Get plans by user-id

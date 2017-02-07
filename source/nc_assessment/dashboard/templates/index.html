@@ -29,6 +29,7 @@
             <thead>
                 <th>Raw</td>
                 <th>Pathname</td>
+                <th>Layer name</td>
                 <th>Status</td>
                 <th>Links</td>
             </thead>
@@ -45,13 +46,14 @@
                             <pre class="dropdown-menu">{{ plan | pprint }}</pre>
                         </div>
                     </td>
-                    <td>{{ plan.status }}</td>
                     <td
                         data-toggle="tooltip"
                         data-placement="auto"
                         title="{{ plan.pathname }}">
                         {{ plan.pathname | format_pathname }}
                     </td>
+                    <td>{{ plan.layer_name }}</td>
+                    <td>{{ plan.status }}</td>
                     <td>
                         <a href="{{ plan._links.self }}">self</a>,
                         <a href="{{ plan._links.collection }}">collection</a>
