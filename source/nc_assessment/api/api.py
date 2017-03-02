@@ -8,6 +8,9 @@ def api():
         "resources": {
             "plans": {
                 "route": "/plans"
+            },
+            "lu_classes": {
+                "route": "/lu_classes"
             }
         }
     }), 200

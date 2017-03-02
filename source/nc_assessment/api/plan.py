@@ -185,6 +185,53 @@ def georeference_plan(
     return "request posted", 201
 
 
+# - Post request for classifying a plan by user-id and plan-id
+@api_blueprint.route(
+    "/plans/<uuid:user_id>/<uuid:plan_id>/classify",
+    methods=["POST"])
+def classify_plan(
+        user_id,
+        plan_id):
+
+    uri = plans_uri("plans/{}/{}".format(user_id, plan_id))
+    data = request.get_json()
+    payload = data["classify"]
+    payload["uri"] = uri
+
+    # Post message in rabbitmq and be done with it.
+    credentials = pika.PlainCredentials(
+        current_app.config["NC_RABBITMQ_DEFAULT_USER"],
+        current_app.config["NC_RABBITMQ_DEFAULT_PASS"]
+    )
+
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(
+            host="rabbitmq",
+            virtual_host=current_app.config[
+                "NC_RABBITMQ_DEFAULT_VHOST"],
+            credentials=credentials,
+            # Keep trying for 8 minutes.
+            connection_attempts=100,
+            retry_delay=5  # Seconds
+    ))
+    channel = connection.channel()
+
+    channel.queue_declare(
+        queue="classify_raster",
+        durable=True)
+    channel.basic_publish(
+        exchange="",
+        routing_key="classify_raster",
+        body=json.dumps(payload),
+        properties=pika.BasicProperties(
+            delivery_mode=2,  # Persistent messages.
+        )
+    )
+    connection.close()
+
+    return "request posted", 201
+
+
 # - Post request for retrieving the colors in a plan by user-id and plan-id
 @api_blueprint.route(
     "/plans/<uuid:user_id>/<uuid:plan_id>/colors",

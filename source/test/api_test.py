@@ -31,6 +31,9 @@ class ApiTest(unittest.TestCase):
                     "plans": {
                         "route": "/plans"
                     },
+                    "lu_classes": {
+                        "route": "/lu_classes"
+                    },
                 }
             })
 
