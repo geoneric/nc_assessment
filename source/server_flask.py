@@ -1,5 +1,3 @@
-import os
-os.environ["NC_ASSESSMENT_CONFIGURATION"] = "development"
 from server import app
 
 

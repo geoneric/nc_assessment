@@ -54,9 +54,9 @@ class DevelopmentConfiguration(Configuration):
         Debug(app)
 
 
-class TestingConfiguration(Configuration):
+class TestConfiguration(Configuration):
 
-    TESTING = True
+    # TESTING = True
 
     ### SQLALCHEMY_DATABASE_URI = os.environ.get("NC_TEST_DATABASE_URI") or \
     ###     "sqlite:///" + os.path.join(tempfile.gettempdir(), "assessment-test.sqlite")
@@ -76,6 +76,7 @@ class ProductionConfiguration(Configuration):
 
 configuration = {
     "development": DevelopmentConfiguration,
-    "testing": TestingConfiguration,
+    "test": TestConfiguration,
+    "acceptance": ProductionConfiguration,
     "production": ProductionConfiguration
 }
