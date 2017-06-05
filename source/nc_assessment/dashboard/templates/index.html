@@ -66,5 +66,37 @@
             <tbody>
         </table>
 
+        <h2>Users</h2>
+        <table class="table table-condensed table-striped">
+            <thead>
+                <th>Raw</td>
+                <th>ID</td>
+                <th>E-mail</td>
+                <th>Links</td>
+            </thead>
+            <tbody>
+    {% for user in users.users %}
+                <tr>
+                    <td>
+                        <div class="dropdown">
+                            <a href="#"
+                                data-toggle="dropdown"
+                                class="dropdown-toggle">
+                                json <b class="caret"></b>
+                            </a>
+                            <pre class="dropdown-menu">{{ user | pprint }}</pre>
+                        </div>
+                    </td>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.e_mail }}</td>
+                    <td>
+                        <a href="{{ user._links.self }}">self</a>,
+                        <a href="{{ user._links.collection }}">collection</a>
+                    </td>
+                </tr>
+    {% endfor %}
+            <tbody>
+        </table>
+
     </div>
 {% endblock %}

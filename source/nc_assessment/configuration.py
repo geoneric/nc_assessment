@@ -20,6 +20,7 @@ class Configuration:
 
     # NC_ASSESSMENT_HOST = "nc_assessment"
     NC_PLAN_HOST = "nc_plan"
+    NC_USER_HOST = "nc_user"
 
     NC_RABBITMQ_DEFAULT_USER = os.environ.get("NC_RABBITMQ_DEFAULT_USER")
     NC_RABBITMQ_DEFAULT_PASS = os.environ.get("NC_RABBITMQ_DEFAULT_PASS")
@@ -43,6 +44,7 @@ class DevelopmentConfiguration(Configuration):
 
     # NC_ASSESSMENT_PORT = 5000
     NC_PLAN_PORT = 5000
+    NC_USER_PORT = 5000
 
 
     @staticmethod
@@ -63,6 +65,7 @@ class TestConfiguration(Configuration):
 
     # NC_ASSESSMENT_PORT = 5000
     NC_PLAN_PORT = 5000
+    NC_USER_PORT = 5000
 
 
 class ProductionConfiguration(Configuration):
@@ -72,6 +75,7 @@ class ProductionConfiguration(Configuration):
 
     # NC_ASSESSMENT_PORT = 3031
     NC_PLAN_PORT = 3031
+    NC_USER_PORT = 3031
 
 
 configuration = {

@@ -12,6 +12,15 @@ def plans_uri(
         route)
 
 
+def users_uri(
+        route):
+    route = route.lstrip("/")
+    return "http://{}:{}/{}".format(
+        current_app.config["NC_USER_HOST"],
+        current_app.config["NC_USER_PORT"],
+        route)
+
+
 @dashboard.route("/")
 def dashboard():
 
@@ -25,5 +34,15 @@ def dashboard():
         flash("error contacting plan service: {}".format(exception))
 
 
+    users = []
+
+    try:
+        uri = users_uri("users")
+        response = requests.get(uri)
+        users = response.json()
+    except Exception as exception:
+        flash("error contacting user service: {}".format(exception))
+
+
     return render_template("index.html",
-        plans=plans)
+        plans=plans, users=users)
