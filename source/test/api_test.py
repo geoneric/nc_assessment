@@ -29,11 +29,14 @@ class ApiTest(unittest.TestCase):
 
         self.assertEqual(data, {
                 "resources": {
+                    "lu_classes": {
+                        "route": "/lu_classes"
+                    },
                     "plans": {
                         "route": "/plans"
                     },
-                    "lu_classes": {
-                        "route": "/lu_classes"
+                    "users": {
+                        "route": "/users"
                     },
                 }
             })

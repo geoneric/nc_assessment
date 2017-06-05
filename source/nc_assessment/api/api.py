@@ -6,11 +6,14 @@ from . import api_blueprint
 def api():
     return jsonify({
         "resources": {
+            "lu_classes": {
+                "route": "/lu_classes"
+            },
             "plans": {
                 "route": "/plans"
             },
-            "lu_classes": {
-                "route": "/lu_classes"
-            }
+            "users": {
+                "route": "/users"
+            },
         }
     }), 200
