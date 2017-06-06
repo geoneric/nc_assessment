@@ -3,6 +3,15 @@ from flask import current_app, flash, render_template, url_for
 from . import dashboard
 
 
+def assessment_requests_uri(
+        route):
+    route = route.lstrip("/")
+    return "http://{}:{}/{}".format(
+        current_app.config["NC_ASSESSMENT_REQUEST_HOST"],
+        current_app.config["NC_ASSESSMENT_REQUEST_PORT"],
+        route)
+
+
 def plans_uri(
         route):
     route = route.lstrip("/")
@@ -23,6 +32,17 @@ def users_uri(
 
 @dashboard.route("/")
 def dashboard():
+
+    assessment_requests = []
+
+    try:
+        uri = assessment_requests_uri("assessment_requests")
+        response = requests.get(uri)
+        assessment_requests = response.json()
+    except Exception as exception:
+        flash("error contacting assessment request service: {}".format(
+            exception))
+
 
     plans = []
 
@@ -45,4 +65,7 @@ def dashboard():
 
 
     return render_template("index.html",
-        plans=plans, users=users)
+        assessment_requests=assessment_requests,
+        plans=plans,
+        users=users
+    )

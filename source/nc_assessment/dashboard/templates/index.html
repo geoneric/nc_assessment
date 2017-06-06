@@ -98,5 +98,39 @@
             <tbody>
         </table>
 
+        <h2>Assessment requests</h2>
+        <table class="table table-condensed table-striped">
+            <thead>
+                <th>Raw</td>
+                <th>ID</td>
+                <th>Status</td>
+                <th>Pathname</td>
+                <th>Links</td>
+            </thead>
+            <tbody>
+    {% for assessment_request in assessment_requests.assessment_requests %}
+                <tr>
+                    <td>
+                        <div class="dropdown">
+                            <a href="#"
+                                data-toggle="dropdown"
+                                class="dropdown-toggle">
+                                json <b class="caret"></b>
+                            </a>
+                            <pre class="dropdown-menu">{{ assessment_request | pprint }}</pre>
+                        </div>
+                    </td>
+                    <td>{{ assessment_request.id }}</td>
+                    <td>{{ assessment_request.status }}</td>
+                    <td>{{ assessment_request.pathname }}</td>
+                    <td>
+                        <a href="{{ assessment_request._links.self }}">self</a>,
+                        <a href="{{ assessment_request._links.collection }}">collection</a>
+                    </td>
+                </tr>
+    {% endfor %}
+            <tbody>
+        </table>
+
     </div>
 {% endblock %}
