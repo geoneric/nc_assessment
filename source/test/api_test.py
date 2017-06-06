@@ -29,6 +29,9 @@ class ApiTest(unittest.TestCase):
 
         self.assertEqual(data, {
                 "resources": {
+                    "assessment_requests": {
+                        "route": "/assessment_requests"
+                    },
                     "lu_classes": {
                         "route": "/lu_classes"
                     },

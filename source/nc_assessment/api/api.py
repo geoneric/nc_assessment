@@ -6,6 +6,9 @@ from . import api_blueprint
 def api():
     return jsonify({
         "resources": {
+            "assessment_requests": {
+                "route": "/assessment_requests"
+            },
             "lu_classes": {
                 "route": "/lu_classes"
             },

@@ -18,7 +18,7 @@ class Configuration:
         os.environ.get("NC_UPLOADS_DEFAULT_DEST") or \
         tempfile.gettempdir()
 
-    # NC_ASSESSMENT_HOST = "nc_assessment"
+    NC_ASSESSMENT_REQUEST_HOST = "nc_assessment_request"
     NC_PLAN_HOST = "nc_plan"
     NC_USER_HOST = "nc_user"
 
@@ -42,7 +42,7 @@ class DevelopmentConfiguration(Configuration):
     ### SQLALCHEMY_DATABASE_URI = os.environ.get("NC_DEV_DATABASE_URI") or \
     ###     "sqlite:///" + os.path.join(tempfile.gettempdir(), "assessment-dev.sqlite")
 
-    # NC_ASSESSMENT_PORT = 5000
+    NC_ASSESSMENT_REQUEST_PORT = 5000
     NC_PLAN_PORT = 5000
     NC_USER_PORT = 5000
 
@@ -63,7 +63,7 @@ class TestConfiguration(Configuration):
     ### SQLALCHEMY_DATABASE_URI = os.environ.get("NC_TEST_DATABASE_URI") or \
     ###     "sqlite:///" + os.path.join(tempfile.gettempdir(), "assessment-test.sqlite")
 
-    # NC_ASSESSMENT_PORT = 5000
+    NC_ASSESSMENT_REQUEST_PORT = 5000
     NC_PLAN_PORT = 5000
     NC_USER_PORT = 5000
 
@@ -73,7 +73,7 @@ class ProductionConfiguration(Configuration):
     ### SQLALCHEMY_DATABASE_URI = os.environ.get("NC_DATABASE_URI") or \
     ###     "sqlite:///" + os.path.join(tempfile.gettempdir(), "assessment.sqlite")
 
-    # NC_ASSESSMENT_PORT = 3031
+    NC_ASSESSMENT_REQUEST_PORT = 3031
     NC_PLAN_PORT = 3031
     NC_USER_PORT = 3031
 
