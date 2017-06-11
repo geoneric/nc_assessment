@@ -103,8 +103,8 @@
             <thead>
                 <th>Raw</td>
                 <th>ID</td>
+                <th>Plan</td>
                 <th>Status</td>
-                <th>Pathname</td>
                 <th>Links</td>
             </thead>
             <tbody>
@@ -121,8 +121,8 @@
                         </div>
                     </td>
                     <td>{{ assessment_request.id }}</td>
+                    <td>{{ assessment_request.plan }}</td>
                     <td>{{ assessment_request.status }}</td>
-                    <td>{{ assessment_request.pathname }}</td>
                     <td>
                         <a href="{{ assessment_request._links.self }}">self</a>,
                         <a href="{{ assessment_request._links.collection }}">collection</a>

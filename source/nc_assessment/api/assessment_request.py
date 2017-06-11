@@ -1,5 +1,7 @@
+import json
 import requests
 from flask import current_app, request
+import pika
 from . import api_blueprint
 
 
@@ -30,8 +32,59 @@ def assessment_requests():
 
         response = requests.post(uri, json=request.get_json())
 
+        if response.status_code == 201:
+            # Ask for assessment of the effects on natural capital. This
+            # creates the data we can later visualize in the webapp.
 
-    return response.text, response.status_code
+            request_dict = response.json()["assessment_request"]
+            assert request_dict["status"] == "pending", request_dict["status"]
+            request_uri = assessment_requests_uri(
+                request_dict["_links"]["self"])
+
+            # Mark request's status as 'queued'
+            payload = {
+                "status": "queued"
+            }
+            response = requests.patch(request_uri, json=payload)
+
+            if response.status_code == 200:
+
+                # Post message in rabbitmq and be done with it.
+                credentials = pika.PlainCredentials(
+                    current_app.config["NC_RABBITMQ_DEFAULT_USER"],
+                    current_app.config["NC_RABBITMQ_DEFAULT_PASS"]
+                )
+
+                connection = pika.BlockingConnection(
+                    pika.ConnectionParameters(
+                        host="rabbitmq",
+                        virtual_host=current_app.config[
+                            "NC_RABBITMQ_DEFAULT_VHOST"],
+                        credentials=credentials,
+                        # Keep trying for 8 minutes.
+                        connection_attempts=100,
+                        retry_delay=5  # Seconds
+                ))
+                channel = connection.channel()
+
+                channel.queue_declare(
+                    queue="perform_nca",
+                    durable=True)
+                channel.basic_publish(
+                    exchange="",
+                    routing_key="perform_nca",
+                    # body=json.dumps(payload),
+                    body="{}".format(request_uri),
+                    properties=pika.BasicProperties(
+                        delivery_mode=2,  # Persistent messages.
+                    )
+                )
+                connection.close()
+
+
+    return \
+        response.text, \
+        201 if response.status_code == 200 else response.status_code
 
 
 # - Get assessment request by id
