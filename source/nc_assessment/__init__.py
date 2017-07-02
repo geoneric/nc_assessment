@@ -56,9 +56,8 @@ def create_app(
 
     Bootstrap(app)
 
-    configure_uploads(app, (uploaded_plans,))
-    # Limit uploads to 32 Mb.
-    patch_request_class(app, 32 * 1024 * 1024)
+    configure_uploads(app, (uploaded_plans, ))
+    patch_request_class(app, 32 * 1024 * 1024)  # <= 32 MiB
 
     ### db.init_app(app)
 

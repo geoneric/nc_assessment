@@ -1,6 +1,6 @@
 import json
 import requests
-from flask import current_app, request
+from flask import current_app, request, Response, stream_with_context
 import pika
 from . import api_blueprint
 
@@ -94,6 +94,47 @@ def assessment_requests():
 def assessment_request(
         id):
     uri = assessment_requests_uri("assessment_requests/{}".format(id))
+    response = requests.get(uri)
+
+    return response.text, response.status_code
+
+
+# - Get assessment result by id
+@api_blueprint.route(
+    "/assessment_results/<uuid:id>",
+    methods=["GET"])
+def assessment_results(
+        id):
+    uri = assessment_requests_uri("assessment_results/{}".format(id))
+    response = requests.get(uri)
+
+    return response.text, response.status_code
+
+
+# - Get assessment result zip file
+@api_blueprint.route(
+    "/assessment_results/<uuid:request_id>/<uuid:id>/zip",
+    methods=["GET"])
+def assessment_result_zip_file(
+        request_id,
+        id):
+
+    uri = assessment_requests_uri("assessment_results/{}/{}/zip".format(
+        request_id, id))
+    request = requests.get(uri, stream=True)
+
+    return Response(
+        stream_with_context(request.iter_content()),
+        content_type=request.headers["content-type"])
+
+
+# - Get assessment indicator result by id
+@api_blueprint.route(
+    "/assessment_indicator_results/<uuid:id>",
+    methods=["GET"])
+def assessment_indicator_results(
+        id):
+    uri = assessment_requests_uri("assessment_indicator_results/{}".format(id))
     response = requests.get(uri)
 
     return response.text, response.status_code

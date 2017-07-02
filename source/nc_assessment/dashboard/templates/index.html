@@ -132,5 +132,85 @@
             <tbody>
         </table>
 
+
+        <h2>Assessment results</h2>
+        <table class="table table-condensed table-striped">
+            <thead>
+                <th>Raw</td>
+                <th>ID</td>
+                <th>Request-ID</td>
+                <th>Data</td>
+                <th>Links</td>
+            </thead>
+            <tbody>
+    {% for assessment_result in assessment_results.assessment_results %}
+                <tr>
+                    <td>
+                        <div class="dropdown">
+                            <a href="#"
+                                data-toggle="dropdown"
+                                class="dropdown-toggle">
+                                json <b class="caret"></b>
+                            </a>
+                            <pre class="dropdown-menu">{{ assessment_result | pprint }}</pre>
+                        </div>
+                    </td>
+                    <td>{{ assessment_result.id }}</td>
+                    <td>{{ assessment_result.request_id }}</td>
+                    <td>{{ assessment_result.data }}</td>
+                    <td>
+                        <a href="{{ assessment_result._links.self }}">self</a>,
+                        <a href="{{ assessment_result._links.collection }}">collection</a>
+                    </td>
+                </tr>
+    {% endfor %}
+            <tbody>
+        </table>
+
+
+        <h2>Assessment indicator results</h2>
+        <table class="table table-condensed table-striped">
+            <thead>
+                <th>Raw</td>
+                <th>ID</td>
+                <th>Result-ID</td>
+                <th>Difference</td>
+                <th>Statistics</td>
+                <th>Links</td>
+            </thead>
+            <tbody>
+    {% for assessment_indicator_result in assessment_indicator_results.assessment_indicator_results %}
+                <tr>
+                    <td>
+                        <div class="dropdown">
+                            <a href="#"
+                                data-toggle="dropdown"
+                                class="dropdown-toggle">
+                                json <b class="caret"></b>
+                            </a>
+                            <pre class="dropdown-menu">{{ assessment_indicator_result | pprint }}</pre>
+                        </div>
+                    </td>
+                    <td>{{ assessment_indicator_result.id }}</td>
+                    <td>{{ assessment_indicator_result.result_id }}</td>
+                    <td>{{ assessment_indicator_result.difference }}</td>
+                    <td>
+                        <div class="dropdown">
+                            <a href="#"
+                                data-toggle="dropdown"
+                                class="dropdown-toggle">
+                                json <b class="caret"></b>
+                            </a>
+                            <pre class="dropdown-menu">{{ assessment_indicator_result.statistics | pprint }}</pre>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="{{ assessment_indicator_result._links.self }}">self</a>,
+                        <a href="{{ assessment_indicator_result._links.collection }}">collection</a>
+                    </td>
+                </tr>
+    {% endfor %}
+            <tbody>
+        </table>
     </div>
 {% endblock %}
